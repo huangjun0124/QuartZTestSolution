@@ -187,6 +187,10 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QuartZTest\QuartZTest.csproj">
+      <Project>{74F6C881-28D6-4F5D-BDE9-5DA405A76DEC}</Project>
+      <Name>QuartZTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{473f7c8c-319c-41be-a906-29a31b4a1328}</Project>
       <Name>Utilities</Name>

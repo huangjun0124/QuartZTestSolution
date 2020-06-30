@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuartZTest;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace WebMvcSite
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             ThreadPool.QueueUserWorkItem(x => PingMySelf());
+            TestJobScheduler.StartAllJobs();
         }
 
         private void PingMySelf()

@@ -11,7 +11,25 @@ namespace QuartZTest
 {
     public class TestJobScheduler
     {
-        public async Task RunHelloJob(IScheduler scheduler)
+        private static IScheduler scheduler;
+        public static void StartAllJobs()
+        {
+            scheduler = StdSchedulerFactory.GetDefaultScheduler().GetAwaiter().GetResult();
+            RunHelloJob().GetAwaiter().GetResult();
+            new PingJob().RunPingJob(scheduler).GetAwaiter().GetResult();
+
+            // and start it off
+            scheduler.Start().GetAwaiter().GetResult();
+        }
+
+        public static bool ShutDownAllJobs()
+        {
+            if(scheduler == null) return false;
+            scheduler.Shutdown(true).GetAwaiter().GetResult();
+            return true;
+        }
+
+        private static async Task RunHelloJob()
         {
             try
             {
@@ -36,6 +54,29 @@ namespace QuartZTest
             {
                 Console.WriteLine(se);
             }
+        }
+
+        /// <summary>
+        /// Only Job in running state will be logged
+        /// </summary>
+        /// <param name="scheduler"></param>
+        public static IList<RunningJobInfo> GetCurrentlyRunningJobs(IScheduler scheduler)
+        {
+            IList<RunningJobInfo> jobs = new List<RunningJobInfo>();
+            
+            foreach (var job in scheduler.GetCurrentlyExecutingJobs().Result)
+            {
+                jobs.Add(new RunningJobInfo()
+                {
+                    JobKey = job.JobDetail.Key.ToString(),
+                    JobType = job.JobDetail.JobType.ToString(),
+                    TriggerKey = job.Trigger.Key.ToString(),
+                    FireTime = job.FireTimeUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff"),
+                    PreviousFireTime = job.PreviousFireTimeUtc.HasValue? job.PreviousFireTimeUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff"):"",
+                    RefireCount = job.RefireCount.ToString()
+                });
+            }
+            return jobs;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using Quartz;
 
 namespace QuartZTest
@@ -13,10 +14,12 @@ namespace QuartZTest
     [DisallowConcurrentExecution]
     public class HelloJob : IJob
     {
+        private ILog Logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public async Task Execute(IJobExecutionContext context)
         {
             await Task.Delay(TimeSpan.FromSeconds(3));
-            await Console.Out.WriteLineAsync("Greetings from HelloJob!");
+            Logger.Info("Greetings from HelloJob!");
         }
     }
 }
