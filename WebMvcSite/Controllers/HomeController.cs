@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using log4net;
 using QuartZTest;
+using Utilities;
 
 namespace WebMvcSite.Controllers
 {
@@ -54,8 +55,25 @@ namespace WebMvcSite.Controllers
         public ActionResult ShutDownAllJobs(FormCollection collection)
         {
             string token = collection.Get("token");
-            Logger.Info("ShutDownAllJobs method invoked");
-            return Json("ShutDown All Jobs successfully, please go back home page to see recently status");
+            Logger.Info($"ShutDownAllJobs method invoked with token [{token}]");
+            if ("69087F41-9763-4B69-89A6-0B647DC74E36".Equals(token))
+            {
+                try
+                {
+                    bool ret = TestJobScheduler.ShutDownAllJobs();
+                    if (ret)
+                    {
+                        return Json("ShutDown All Jobs successfully, please go back home page to check recently status");
+                    }
+                    return Json("Operation Failed");
+                }
+                catch (Exception e)
+                {
+                    return Json($"Operation Failed with error :{Environment.NewLine}{e.GetMessage()}");
+                }
+               
+            }
+            return Json("Token Invalid, please recheck!");
         }
     }
 }
