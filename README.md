@@ -18,3 +18,6 @@ Change Quartz test to Class Library, Run Quartz in WebMVC Site
 [$ is not defined in view](https://stackoverflow.com/questions/35054833/is-not-defined-in-view)
 [auto refresh MVC view](https://stackoverflow.com/questions/5019235/auto-refresh-mvc-view)
 [How can I refresh a page with jQuery?](https://stackoverflow.com/questions/5404839/how-can-i-refresh-a-page-with-jquery)
+
+## QuartZ monitor home page
+![image](https://github.com/huangjun0124/QuartZTestSolution/blob/master/QuartZTest/TestResult/2020-07-01_083934.png)
