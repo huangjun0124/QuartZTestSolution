@@ -12,3 +12,9 @@
 
 ## UPDATE 1. 
 Change Quartz test to Class Library, Run Quartz in WebMVC Site
+[Bootstrap Tables usage](https://www.w3schools.com/bootstrap/bootstrap_tables.asp)
+
+## Asp NET MVC using jquery
+[$ is not defined in view](https://stackoverflow.com/questions/35054833/is-not-defined-in-view)
+[auto refresh MVC view](https://stackoverflow.com/questions/5019235/auto-refresh-mvc-view)
+[How can I refresh a page with jQuery?](https://stackoverflow.com/questions/5404839/how-can-i-refresh-a-page-with-jquery)

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Quartz;
 using Quartz.Impl;
+using Quartz.Impl.Triggers;
 
 namespace QuartZTest
 {
@@ -60,23 +61,37 @@ namespace QuartZTest
         /// Only Job in running state will be logged
         /// </summary>
         /// <param name="scheduler"></param>
-        public static IList<RunningJobInfo> GetCurrentlyRunningJobs(IScheduler scheduler)
+        public static IList<RunningJobInfo> GetCurrentlyRunningJobs()
         {
             IList<RunningJobInfo> jobs = new List<RunningJobInfo>();
-            
-            foreach (var job in scheduler.GetCurrentlyExecutingJobs().Result)
+            if (scheduler != null)
             {
-                jobs.Add(new RunningJobInfo()
+                foreach (var job in scheduler.GetCurrentlyExecutingJobs().Result)
                 {
-                    JobKey = job.JobDetail.Key.ToString(),
-                    JobType = job.JobDetail.JobType.ToString(),
-                    TriggerKey = job.Trigger.Key.ToString(),
-                    FireTime = job.FireTimeUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff"),
-                    PreviousFireTime = job.PreviousFireTimeUtc.HasValue? job.PreviousFireTimeUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff"):"",
-                    RefireCount = job.RefireCount.ToString()
-                });
+                    string triggeredCount = job.RefireCount.ToString();
+                    jobs.Add(new RunningJobInfo()
+                    {
+                        JobKey = job.JobDetail.Key.ToString(),
+                        JobType = job.JobDetail.JobType.ToString(),
+                        TriggerKey = job.Trigger.Key.ToString(),
+                        FireTime = job.FireTimeUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff"),
+                        PreviousFireTime = job.PreviousFireTimeUtc.HasValue ? job.PreviousFireTimeUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff") : "",
+                        RefireCount = GetJobTriggeredCount(job)
+                    });
+                    
+                }
             }
             return jobs;
+        }
+
+        private static string GetJobTriggeredCount(IJobExecutionContext job)
+        {
+            var simpleTrigger = job.Trigger as SimpleTriggerImpl;
+            if (simpleTrigger != null)
+            {
+                return simpleTrigger.TimesTriggered.ToString();
+            }
+            return job.RefireCount.ToString();
         }
     }
 }

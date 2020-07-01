@@ -14,5 +14,6 @@ namespace QuartZTest
         public string FireTime { get; set; }
         public string PreviousFireTime { get; set; }
         public string RefireCount { get; set; }
+        public string HtmlClass { get; set; }
     }
 }
